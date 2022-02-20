@@ -8,6 +8,7 @@ import ir.tdroid.gapfilmtask.data.db.entity.toContent
 import ir.tdroid.gapfilmtask.data.db.entity.toDbContent
 import ir.tdroid.gapfilmtask.data.remote.ApiService
 import ir.tdroid.gapfilmtask.data.remote.model.GetContentListRequest
+import ir.tdroid.gapfilmtask.data.remote.model.GetContentRequest
 import ir.tdroid.gapfilmtask.data.remote.model.toContent
 import ir.tdroid.gapfilmtask.model.Content
 import javax.inject.Inject
@@ -48,6 +49,13 @@ class ContentRepository @Inject constructor(
    suspend fun updateContent(content : Content) {
         contentDao.update(content.toDbContent())
     }
+   suspend fun toggleFavoriteContents(id : Int) {
+        contentDao.toggleFavoriteContents(id)
+    }
 
     fun getContentList() = contentDao.getContents().map { it.map { content -> content.toContent() } }
+
+    suspend fun getContent(request: GetContentRequest) = apiService.getContent(request)
+
+    fun isFavoriteContents(id : Int) = contentDao.isFavoriteContents(id)
 }

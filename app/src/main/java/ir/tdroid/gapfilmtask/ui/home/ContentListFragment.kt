@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import ir.tdroid.gapfilmtask.R
 import ir.tdroid.gapfilmtask.base.BaseFragment
 import ir.tdroid.gapfilmtask.common.Resource
+import ir.tdroid.gapfilmtask.common.navigateAnim
 import ir.tdroid.gapfilmtask.databinding.FragmentContentListBinding
 import ir.tdroid.gapfilmtask.model.Content
 
@@ -36,6 +39,13 @@ class ContentListFragment : BaseFragment<FragmentContentListBinding>() {
             val item = it.copy()
             item.isFavourite = !it.isFavourite
             contentListViewModel.updateContent(item)
+        }
+
+        contentAdapter.onItemSelected = {
+           val bundle = Bundle().apply {
+               putInt("id" , it.ContentID ?: 0)
+           }
+            findNavController().navigateAnim(R.id.action_homeFragment_to_contentFragment , bundle)
         }
 
         contentListViewModel.fetchContentList().observe(viewLifecycleOwner){
