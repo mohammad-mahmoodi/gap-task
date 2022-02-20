@@ -43,7 +43,11 @@ class ContentRepository @Inject constructor(
             this.emit(Resource.Error("error"))
         }
     }
+    fun getFavoriteContent() = contentDao.getFavoriteContents().map { it.map { content -> content.toContent() } }
 
-    fun getContentList() = contentDao.getContens().map { it.map { content -> content.toContent() } }
+   suspend fun updateContent(content : Content) {
+        contentDao.update(content.toDbContent())
+    }
 
+    fun getContentList() = contentDao.getContents().map { it.map { content -> content.toContent() } }
 }

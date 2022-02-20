@@ -2,8 +2,9 @@ package ir.tdroid.gapfilmtask.model
 
 
 data class Content(
-    val ContentID: Int? = null,
-    val title: String? = null,
-    val ZoneId: Int? = null,
-    val landscapeImage: String? = null,
+    var ContentID: Int? = null,
+    var title: String? = null,
+    var ZoneId: Int? = null,
+    var landscapeImage: String? = null,
+    var isFavourite: Boolean = false
 )

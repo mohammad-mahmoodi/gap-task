@@ -45,6 +45,7 @@ class ContentListFragment : BaseFragment<FragmentContentListBinding>() {
             }
         }
 
+
     }
 
 }
