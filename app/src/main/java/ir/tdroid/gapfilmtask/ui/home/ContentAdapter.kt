@@ -14,7 +14,8 @@ class ContentAdapter() :
     ListAdapter<Content, ContentAdapter.ContentViewHolder>(BusinessDiffCallback()) {
 
 
-    lateinit var onItemSelected: (Content) -> Unit
+     var onItemSelected: ((Content) -> Unit)? = null
+     var onFavClick : ((Content) -> Unit)? = null
 
 
     class ContentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -47,7 +48,11 @@ class ContentAdapter() :
             .load(
                 item.landscapeImage
             )
+            .fitCenter()
             .into(viewHolder.binding.imageView)
+
+        viewHolder.binding.imgFav.setOnClickListener { onFavClick?.invoke(item) }
+        viewHolder.binding.lnRoot.setOnClickListener { onItemSelected?.invoke(item) }
 
     }
 

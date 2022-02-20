@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import ir.tdroid.gapfilmtask.base.BaseFragment
+import ir.tdroid.gapfilmtask.databinding.FragmentFavouriteListBinding
 import ir.tdroid.gapfilmtask.databinding.FragmentHomeBinding
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -41,8 +42,11 @@ class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment)
     override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
-        val fragment = ContentListFragment()
+        return when(position){
+            0-> ContentListFragment()
+            1-> FavouriteListFragment()
+            else -> ContentListFragment()
+        }
 
-        return fragment
     }
 }

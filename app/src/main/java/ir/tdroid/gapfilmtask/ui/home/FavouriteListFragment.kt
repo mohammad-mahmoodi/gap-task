@@ -9,15 +9,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import ir.tdroid.gapfilmtask.base.BaseFragment
 import ir.tdroid.gapfilmtask.common.Resource
-import ir.tdroid.gapfilmtask.databinding.FragmentContentListBinding
+import ir.tdroid.gapfilmtask.databinding.FragmentFavouriteListBinding
+
 @AndroidEntryPoint
-class ContentListFragment : BaseFragment<FragmentContentListBinding>() {
+class FavouriteListFragment : BaseFragment<FragmentFavouriteListBinding>() {
     private val contentListViewModel : ContentListViewModel by viewModels()
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentContentListBinding {
-        return FragmentContentListBinding.inflate(inflater,container,false)
+    ): FragmentFavouriteListBinding {
+        return FragmentFavouriteListBinding.inflate(inflater,container,false)
     }
 
 
@@ -26,24 +27,13 @@ class ContentListFragment : BaseFragment<FragmentContentListBinding>() {
         val contentAdapter = ContentAdapter()
         binding.rv.layoutManager = LinearLayoutManager(requireContext())
         binding.rv.adapter = contentAdapter
-        contentListViewModel.getContentList().observe(viewLifecycleOwner){
+        contentListViewModel.getFavouriteList().observe(viewLifecycleOwner){
             contentAdapter.submitList(it)
         }
 
         contentAdapter.onFavClick = {
             it.isFavourite = !it.isFavourite
             contentListViewModel.updateContent(it)
-        }
-
-        contentListViewModel.fetchContentList().observe(viewLifecycleOwner){
-            when(it) {
-                is Resource.Error -> {
-                }
-                Resource.Loading -> {
-                }
-                is Resource.Success -> {
-                }
-            }
         }
 
 
