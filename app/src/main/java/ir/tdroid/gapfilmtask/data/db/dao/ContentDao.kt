@@ -18,7 +18,7 @@ interface ContentDao {
     @Query("SELECT * FROM content where isFavourite = 1 and ContentID = :id")
     fun isFavoriteContents(id:Int): LiveData<List<DbContent>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(contents: List<DbContent>)
 
     @Update()

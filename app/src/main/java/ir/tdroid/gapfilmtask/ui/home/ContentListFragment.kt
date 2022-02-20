@@ -51,10 +51,13 @@ class ContentListFragment : BaseFragment<FragmentContentListBinding>() {
         contentListViewModel.fetchContentList().observe(viewLifecycleOwner){
             when(it) {
                 is Resource.Error -> {
+                    binding.progress.visibility = View.GONE
                 }
                 Resource.Loading -> {
+                    binding.progress.visibility = View.VISIBLE
                 }
                 is Resource.Success -> {
+                    binding.progress.visibility = View.GONE
                 }
             }
         }

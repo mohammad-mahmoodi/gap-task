@@ -3,6 +3,7 @@ package ir.tdroid.gapfilmtask.repository
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import ir.tdroid.gapfilmtask.common.Resource
+import ir.tdroid.gapfilmtask.common.retryIO
 import ir.tdroid.gapfilmtask.data.db.dao.ContentDao
 import ir.tdroid.gapfilmtask.data.db.entity.toContent
 import ir.tdroid.gapfilmtask.data.db.entity.toDbContent
@@ -23,17 +24,20 @@ class ContentRepository @Inject constructor(
     fun updateContentList() = liveData<Resource<Unit>> {
         this.emit(Resource.Loading)
         try {
-            val remoteData = apiService.getContentList(
-                request = GetContentListRequest(
-                    GetContentListRequest.Request(
-                        requestType = 2,
-                        pageSize = 10,
-                        pageIndex = 1,
-                        orderBy = "createdate",
-                        order = "desc"
+            val remoteData = retryIO {
+                apiService.getContentList(
+                    request = GetContentListRequest(
+                        GetContentListRequest.Request(
+                            requestType = 2,
+                            pageSize = 10,
+                            pageIndex = 1,
+                            orderBy = "createdate",
+                            order = "desc"
+                        )
                     )
+
                 )
-            )
+            }
             val dbContentList = remoteData.result!!.getContentList!!
                 .map { it!!.toContent() }
                 .map { it.toDbContent() }
@@ -44,18 +48,22 @@ class ContentRepository @Inject constructor(
             this.emit(Resource.Error("error"))
         }
     }
-    fun getFavoriteContent() = contentDao.getFavoriteContents().map { it.map { content -> content.toContent() } }
 
-   suspend fun updateContent(content : Content) {
+    fun getFavoriteContent() =
+        contentDao.getFavoriteContents().map { it.map { content -> content.toContent() } }
+
+    suspend fun updateContent(content: Content) {
         contentDao.update(content.toDbContent())
     }
-   suspend fun toggleFavoriteContents(id : Int) {
+
+    suspend fun toggleFavoriteContents(id: Int) {
         contentDao.toggleFavoriteContents(id)
     }
 
-    fun getContentList() = contentDao.getContents().map { it.map { content -> content.toContent() } }
+    fun getContentList() =
+        contentDao.getContents().map { it.map { content -> content.toContent() } }
 
     suspend fun getContent(request: GetContentRequest) = apiService.getContent(request)
 
-    fun isFavoriteContents(id : Int) = contentDao.isFavoriteContents(id)
+    fun isFavoriteContents(id: Int) = contentDao.isFavoriteContents(id)
 }
