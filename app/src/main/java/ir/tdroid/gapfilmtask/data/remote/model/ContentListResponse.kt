@@ -3,6 +3,7 @@ package ir.tdroid.gapfilmtask.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 import androidx.annotation.Keep
+import ir.tdroid.gapfilmtask.model.Content
 
 @Keep
 data class ContentListResponse(
@@ -154,4 +155,8 @@ data class ContentListResponse(
             )
         }
     }
+}
+
+fun ContentListResponse.Result.GetContent.toContent() : Content {
+    return Content(ContentID = this.contentID ,title = this.title , ZoneId = this.zoneID , landscapeImage =  this.landscapeImage )
 }

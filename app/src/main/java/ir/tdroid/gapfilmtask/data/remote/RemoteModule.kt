@@ -20,7 +20,7 @@ object RemoteModule {
     @Singleton
     fun provideApiService(gson: Gson,okHttpClient: OkHttpClient): ApiService {
         return Retrofit.Builder()
-            .baseUrl("'https://core.gapfilm.ir/mobile/")
+            .baseUrl("https://core.gapfilm.ir/mobile/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()
