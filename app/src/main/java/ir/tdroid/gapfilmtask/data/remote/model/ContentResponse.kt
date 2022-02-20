@@ -162,7 +162,7 @@ data class ContentResponse(
                 @SerializedName("Quality")
                 var quality: Int? = null,
                 @SerializedName("Size")
-                var size: Int? = null,
+                var size: Long? = null,
                 @SerializedName("Thumbnail")
                 var thumbnail: String? = null,
                 @SerializedName("Times")
