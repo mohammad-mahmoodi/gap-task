@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import ir.tdroid.gapfilmtask.base.BaseFragment
 import ir.tdroid.gapfilmtask.common.Resource
@@ -22,8 +23,11 @@ class ContentListFragment : BaseFragment<FragmentContentListBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val contentAdapter = ContentAdapter()
+        binding.rv.layoutManager = LinearLayoutManager(requireContext())
+        binding.rv.adapter = contentAdapter
         contentListViewModel.getContentList().observe(viewLifecycleOwner){
-            it.size
+            contentAdapter.submitList(it)
         }
 
 
