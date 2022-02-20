@@ -10,6 +10,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import ir.tdroid.gapfilmtask.base.BaseFragment
 import ir.tdroid.gapfilmtask.common.Resource
 import ir.tdroid.gapfilmtask.databinding.FragmentContentListBinding
+import ir.tdroid.gapfilmtask.model.Content
+
 @AndroidEntryPoint
 class ContentListFragment : BaseFragment<FragmentContentListBinding>() {
     private val contentListViewModel : ContentListViewModel by viewModels()
@@ -31,8 +33,9 @@ class ContentListFragment : BaseFragment<FragmentContentListBinding>() {
         }
 
         contentAdapter.onFavClick = {
-            it.isFavourite = !it.isFavourite
-            contentListViewModel.updateContent(it)
+            val item = it.copy()
+            item.isFavourite = !it.isFavourite
+            contentListViewModel.updateContent(item)
         }
 
         contentListViewModel.fetchContentList().observe(viewLifecycleOwner){

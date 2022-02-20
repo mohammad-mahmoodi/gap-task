@@ -1,5 +1,6 @@
 package ir.tdroid.gapfilmtask.ui.home
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,8 @@ class ContentAdapter() :
     ListAdapter<Content, ContentAdapter.ContentViewHolder>(BusinessDiffCallback()) {
 
 
-     var onItemSelected: ((Content) -> Unit)? = null
-     var onFavClick : ((Content) -> Unit)? = null
+    var onItemSelected: ((Content) -> Unit)? = null
+    var onFavClick: ((Content) -> Unit)? = null
 
 
     class ContentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -38,10 +39,17 @@ class ContentAdapter() :
         val item = getItem(position)
 
         viewHolder.binding.textName.text = item?.title
-        viewHolder.binding.txtType.text = when(item?.ZoneId){
+        viewHolder.binding.txtType.text = when (item?.ZoneId) {
             3 -> "سریال"
             4 -> "فیلم سینمایی"
-            else ->""
+            else -> ""
+        }
+
+        if (item.isFavourite) {
+            viewHolder.binding.imgFav.setColorFilter(Color.parseColor("#C75450"))
+        } else {
+            viewHolder.binding.imgFav.setColorFilter(Color.parseColor("#EAA9A9"))
+
         }
 
         Glide.with(viewHolder.binding.imageView)
